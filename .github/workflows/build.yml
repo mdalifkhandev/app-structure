@@ -1,0 +1,73 @@
+name: Build Android APK
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: "Build type"
+        required: true
+        default: "release"
+        type: choice
+        options:
+          - release
+          - debug
+
+env:
+  BUILD_TYPE: ${{ github.event.inputs.build_type || 'release' }}
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create Firebase config
+        run: echo "${{ secrets.ANDROID_GOOGLE_SERVICES_JSON_B64 }}" | base64 -d > google-services.json
+
+      - name: Build APK
+        run: |
+          if [ "$BUILD_TYPE" = "release" ]; then
+            npx expo prebuild --platform android --clean
+            cd android
+            ./gradlew assembleRelease
+          else
+            npx expo prebuild --platform android --clean
+            cd android
+            ./gradlew assembleDebug
+          fi
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ env.BUILD_TYPE }}-apk
+          path: |
+            android/app/build/outputs/apk/${{ env.BUILD_TYPE }}/*.apk
+          retention-days: 30
+
+      - name: Get APK info
+        run: |
+          echo "Build completed successfully!"
+          echo "Build type: $BUILD_TYPE"
+          echo "APK files generated:"
+          find android/app/build/outputs/apk/$BUILD_TYPE -name "*.apk" -exec ls -la {} \;
