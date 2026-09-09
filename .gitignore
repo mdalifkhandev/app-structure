@@ -1,8 +1,5 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
+# Dependencies
 node_modules/
-package-lock.json
 
 # Expo
 .expo/
@@ -10,63 +7,40 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# Native build output
+/android/
+/ios/
 .kotlin/
 *.orig.*
-*.jks
+
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.pem
+*.key
 *.p8
 *.p12
-*.key
-*.mobileprovision
-
-# Metro
-.metro-health-check*
-
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
-
-# macOS
-.DS_Store
-*.pem
-
-# local env files
-.env*.local
-
-# typescript
-*.tsbuildinfo
-
-app-example
-test.tx
-
-
-# generated native folders
-/ios
-/android
-
-release.keystore
-keystore.txt
-*.keystore
 *.jks
+*.keystore
+*.mobileprovision
 keystore.properties
-android/keystore.properties
-android/app/release.keystore
-
-
-# env files
-
-# firebase configs
+release.keystore
 google-services.json
 GoogleService-Info.plist
 
-# remove docs folder
-docs
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-REACT_NATIVE_SUPPORT_INTEGRATION.md
-RATING_SYSTEM_INTEGRATION.md
-RATING_REACT_NATIVE_INTEGRATION.md
-open-to-work-query.md
-JOB_FILTER_ROUTES.md
-OPEN_TO_WORK_AND_RECRUITMENT_PUBLIC_INTEGRATION.md
-config.bat
+# TypeScript
+*.tsbuildinfo
+
+# OS and editor
+.DS_Store
+Thumbs.db
+
+# Metro
+.metro-health-check*
