@@ -44,3 +44,4 @@ Thumbs.db
 
 # Metro
 .metro-health-check*
+node_modules/
