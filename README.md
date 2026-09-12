@@ -47,6 +47,6 @@ hooks/
 locales/
 services/
 stores/
-types/
+type/
 utils/
 ```
